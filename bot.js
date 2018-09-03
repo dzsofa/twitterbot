@@ -6,29 +6,48 @@ var config = require("./config");
 
 var T = new Twit(config);
 
-// var params = {
-//   q: "pizza",
-//   count: 10
-// };
+var exec = require("child_process").exec;
+var fs = require("fs");
 
-// function gotData(err, data, response) {
-//   var tweets = data.statuses;
-//   for (var i = 0; i < tweets.length; i++) {
-//     console.log(tweets[i].text);
-//     console.log();
-//   }
-// }
+var dirArray = ["sketches", "triangles"];
 
-// T.get("search/tweets", params, gotData);
+setInterval(tweetMyThing, 1000 * 60 * 60);
 
-let params = {
-  status: "I was tweeted with node.js!"
-};
+//TODO - move inner function calls to separate functions
+function tweetMyThing() {
+  var directory = dirArray[Math.floor(Math.random() * dirArray.length)];
 
-function postData(err, data, response) {
-  err
-    ? console.log("Yo, there's a problem")
-    : console.log("Everything is just fine");
+  var command =
+    process.env.TWITTERBOT_HOME +
+    "processing-java --sketch=" +
+    process.env.TWITTERBOT_HOME +
+    directory +
+    " --run";
+
+  exec(command, processing);
+
+  function processing() {
+    var fileName = directory + "/output.png";
+    var params = {
+      encoding: "base64"
+    };
+    var b64 = fs.readFileSync(fileName, params);
+    T.post("media/upload", { media_data: b64 }, uploaded);
+
+    function uploaded(err, data, respsonse) {
+      var id = data.media_id_string;
+      var tweet = {
+        status: "#tweetsomesweetprocessing ",
+        media_ids: [id]
+      };
+      T.post("statuses/update", tweet, postData);
+    }
+    function postData(err, data, response) {
+      if (err) {
+        console.log("Yo, there's a problem.");
+      } else {
+        console.log("Everything's juuust fine.");
+      }
+    }
+  }
 }
-
-T.post("statuses/update", params, postData);
