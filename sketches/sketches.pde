@@ -1,17 +1,17 @@
 void setup() {
-  size(640,360);
+  size(640, 360);
   for (int i = 0; i < 80; i++) {
-    
+
     float x = random(width);
     float y = random(height);
-    float r = random(100,255);
-    float g = random (100,255);
-    float b = random (100,255);
-    float radius = random(20,100);
-    float npoints = random(5,10);
+    float r = random(100, 255);
+    float g = random (100, 255);
+    float b = random (100, 255);
+    float radius = random(20, 100);
+    float npoints = random(5, 10);
     noStroke();
-    fill(r,g,b,95);
-    polygon(x,y,radius,int (npoints));
+    fill(r, g, b, 95);
+    polygon(x, y, radius, int (npoints));
   }
   save("output.png");
   exit();
