@@ -11,14 +11,14 @@ var fs = require("fs");
 
 var dirArray = ["sketches", "triangles"];
 
-setInterval(tweetMyThing, 1000 * 60 * 60);
+setInterval(tweetMyThing, 1000 * 60 * 10);
 
 //TODO - move inner function calls to separate functions
 function tweetMyThing() {
   var directory = dirArray[Math.floor(Math.random() * dirArray.length)];
 
   var command =
-    process.env.TWITTERBOT_HOME +
+    process.env.PROCESSING_HOME +
     "processing-java --sketch=" +
     process.env.TWITTERBOT_HOME +
     directory +
