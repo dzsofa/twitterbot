@@ -1,16 +1,16 @@
 void setup() {
-  size(640, 360);
-  for (int i = 0; i < 80; i++) {
 
+  color[] colors = {#1a535c, #4ecdc4, #f7fff7, #ff6b6b, #ffe66d};
+
+  size(640, 360);
+  for (int i = 0; i < 60; i++) {
+    int index = int(random(colors.length));
     float x = random(width);
     float y = random(height);
-    float r = random(100, 255);
-    float g = random (100, 255);
-    float b = random (100, 255);
-    float radius = random(20, 100);
-    float npoints = random(5, 10);
+    float radius = random(20, 80);
+    float npoints = random(3, 12);
     noStroke();
-    fill(r, g, b, 95);
+    fill(colors[index], 95);
     polygon(x, y, radius, int (npoints));
   }
   save("output.png");
